@@ -34,19 +34,13 @@ const Sidebar:FC = () => {
     const handleChange = (search:string)=>{
         let filterContacts = [];
         if (search !== "") {
-            let array = [...dialogs,...contacts,...messages];
-            let newArray = array.map(item=> {
-                return {
-                    ...item,
-                    message: {
-                        ...item?.message,
-                        message: (item.message?.message) ? item.message?.message: ""
-                    }
-                }
+            let onlyContacts = contacts.filter(item => {
+                return (item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1)
             });
-            filterContacts = newArray.filter(item => {
-                return (item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1 || item.message.message.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+            let onlyMessages = messages.filter(item => {
+                return (item.message.message.toLowerCase().indexOf(search.toLowerCase()) !== -1)
             });
+            filterContacts = [...onlyContacts,...onlyMessages]
 
         } else {
             filterContacts = (tab === 1) ? dialogs : contacts;
